@@ -1,0 +1,27 @@
+{
+  "name": "mareket-data-visualizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/monojitb02/mareket-data-visualizer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/monojitb02/mareket-data-visualizer/issues"
+  },
+  "homepage": "https://github.com/monojitb02/mareket-data-visualizer#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "lodash": "^4.17.12",
+    "mongoose": "^5.7.14",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8"
+  }
+}

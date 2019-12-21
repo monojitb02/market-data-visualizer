@@ -1,0 +1,92 @@
+openapi: 3.0.1
+info:
+  title: Seed API microservice
+  version: 1.0.0
+servers:
+  - url: /api/project/service/v1
+security:
+  - ApiKeyAuth: []
+paths:
+  /options/now:
+    x-swagger-router-controller: option
+    get:
+      tags:
+        - Collectors
+      description: All requested places
+      operationId: collectNow
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PlaceResponse"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /system/health:
+    x-swagger-router-controller: system
+    get:
+      x-anonymous: true
+      tags:
+        - Sytem
+      description: Provides health check status
+      operationId: getHealth
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+  /system/version:
+    x-swagger-router-controller: system
+    get:
+      x-anonymous: true
+      tags:
+        - Sytem
+      description: Provides the version number of the service
+      operationId: getVersion
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VersionResponse"
+
+components:
+  schemas:
+    VersionResponse:
+      description: Version details
+      type: object
+      properties:
+        version:
+          type: string
+    DirectionResponse:
+      description: Direction Details
+      type: object
+    PlaceResponse:
+      description: Place Details
+      type: object
+    HealthResponse:
+      description: Health Response
+      type: object
+      properties:
+        status:
+          type: string
+    ErrorResponse:
+      success:
+        type: boolean
+      message:
+        type: string
+  securitySchemes:
+    ApiKeyAuth: # arbitrary name for the security scheme
+      type: apiKey
+      in: header # can be "header", "query" or "cookie"
+      name: x-api-key

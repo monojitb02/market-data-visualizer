@@ -1,1 +1,19 @@
 node_modules
+npm-debug
+
+# Logs
+logs
+*.log
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Coverage temp directory used by nyc
+.nyc_output
+
+# Sonar Scanner temp directory used by SonarQube
+.scannerwork
+*.env
+
+#VS Code
+# .vscode/launch.json

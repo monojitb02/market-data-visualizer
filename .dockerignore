@@ -1,0 +1,10 @@
+.git
+node_modules
+npm-debug
+.vscode
+coverage
+test-reports
+.nyc_output
+.scannerworker
+logs
+*.env

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polylines</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="inputIsiBerita">Latitude:</label>
+    <input type="text" class="form-control" required name="latitude">
+    <label for="inputIsiBerita">Longitude</label>
+    <input type="text" class="form-control" required name="longitude">
+    <div id="map"></div>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13,
+                center: {
+                    "lat": 25.2747941,
+                    "lng": 55.3808552
+                },
+                mapTypeId: 'terrain'
+            });
+            var request = new XMLHttpRequest()
+
+            // Open a new connection, using the GET request on the URL endpoint
+            request.open('GET', `${window.location.origin}/api/project/service/v1/directions/cluster/hash`, true)
+
+            request.setRequestHeader("accept", "application/json");
+            request.setRequestHeader("x-api-key", "abc1234");
+            request.onload = function () {
+                const hasList = JSON.parse(this.responseText);
+                hasList.map((item) => {
+                    let index = item.clusterId || 0;
+                    const path = item.routes[0].overview_polyline.points;
+                    draw(map, path, index, item.startId);
+                })
+            }
+            var marker = new google.maps.Marker({
+                map: map,
+                position: new google.maps.LatLng(25.2747941, 55.3808552),
+                draggable: true
+            });
+
+            google.maps.event.addListener(marker, 'dragend', function () {
+                document.getElementsByName('latitude')[0].value = marker.getPosition().lat();
+                document.getElementsByName('longitude')[0].value = marker.getPosition().lng();
+            })
+
+            // Send request
+            request.send()
+        }
+        function draw(map, pathHash, index, startTitle) {
+            path = google.maps.geometry.encoding.decodePath(pathHash);
+
+
+            // Define the symbol, using one of the predefined paths ('CIRCLE')
+            // supplied by the Google Maps JavaScript API.
+            var lineSymbol = {
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                scale: 3,
+                strokeColor: '#0000ff'
+            };
+
+            const line = new google.maps.Polyline({
+                path,
+                geodesic: false,
+                strokeColor: '#669df6',
+                strokeOpacity: 1,
+                strokeWeight: 5,
+                draggable: false,
+                map,
+                icons: [{
+                    icon: lineSymbol,
+                    offset: '0%'
+                }],
+            });
+            new google.maps.Marker({
+                position: path[0],
+                title: startTitle,
+                icon: {
+                    url: `https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=${index}|FE6256|000000`
+                },
+                map,
+            });
+            new google.maps.Marker({
+                position: path[path.length - 1],
+                // title: endTitle,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/kml/paddle/stop.png"
+                },
+                map,
+            });
+
+            animateCircle(line);
+        }
+
+        // Use the DOM setInterval() function to change the offset of the symbol
+        // at fixed intervals.
+        function animateCircle(line) {
+            var count = 0;
+            window.setInterval(function () {
+                count = (count + 1) % 500;
+
+                var icons = line.get('icons');
+                icons[0].offset = `${count / 5}%`;
+                line.set('icons', icons);
+            }, 50);
+        }
+    </script>
+</body>
+
+</html>

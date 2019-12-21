@@ -51,11 +51,14 @@ const createLoggerWithUserContext = (request, context = {}) => {
                 propKey === 'error'
             ) {
                 return (message, metaData) => {
+                    if (metaData.stack && metaData.message) {
+                        metaData = { Error: util.inspect(metaData) }
+                    }
                     const meta = {
                         ...context, ...logContext, ...metaData,
                         time: new Date() // not required if logger has default time log
                     };
-                    target[propKey](util.inspect(message), util.inspect(meta));
+                    target[propKey](util.inspect(message), meta);
                 }
             }
             return target[propKey];

@@ -7,13 +7,13 @@ servers:
 security:
   - ApiKeyAuth: []
 paths:
-  /options/now:
+  /options/latest:
     x-swagger-router-controller: option
     get:
       tags:
         - Collectors
-      description: All requested places
-      operationId: collectNow
+      description: Equity Derivative options
+      operationId: getLatest
       responses:
         200:
           description: Success
@@ -22,7 +22,27 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/PlaceResponse"
+                  $ref: "#/components/schemas/OptionResponse"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - Collectors
+      description: Equity Derivative options
+      operationId: collectLatest
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OptionResponse"
         default:
           description: Error
           content:
@@ -68,11 +88,8 @@ components:
       properties:
         version:
           type: string
-    DirectionResponse:
-      description: Direction Details
-      type: object
-    PlaceResponse:
-      description: Place Details
+    OptionResponse:
+      description: Equity Derivative options
       type: object
     HealthResponse:
       description: Health Response

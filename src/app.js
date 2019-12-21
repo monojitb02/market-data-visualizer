@@ -145,7 +145,6 @@ class App {
     async connectToDB({ user, password, url, isSrv = false }) {
         const prefix = isSrv ? 'mongodb+srv' : 'mongodb';
         const connectionUri = `${prefix}://${user}:${password}@${url}`;
-        console.log(connectionUri);
         await mongoose.connect(connectionUri, {
             useNewUrlParser: true,
             useUnifiedTopology: true

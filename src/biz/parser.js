@@ -27,8 +27,9 @@ class Parser {
                     .replace('\\n', '')
                     .replace('\\t', '')
                     .replace('-', '')
-                    .replace(',', '');
-                value = Number(value);
+                    // eslint-disable-next-line no-useless-escape
+                    .replace(/\,/g, '');
+                value = value.length ? Number(value) : null;
             }
             let level = dataObject;
             if (columnIndex === StrikePriceIndex) {

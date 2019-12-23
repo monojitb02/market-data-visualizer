@@ -49,8 +49,8 @@ class OptionDAO {
             }
         });
         if (newOptions.length) {
-            const newOptions = await this.model.insertMany(newOptions);
-            savedOptions.concat(newOptions)
+            const createdOptions = await this.model.insertMany(newOptions);
+            savedOptions.concat(createdOptions)
         }
         return savedOptions;
     }

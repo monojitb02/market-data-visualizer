@@ -24,7 +24,7 @@ class Grafana {
             //     to,
             // },
             // intervalMs,
-            // targets,
+            targets: [target],
             // maxDataPoints,
             // adhocFilters,
             scopedVars: {
@@ -33,12 +33,10 @@ class Grafana {
                 },
                 field: {
                     value: fieldValue = 'oi'
-                },
-                type: {
-                    value: typeValue = 'calls'
                 }
             }
         } = req.body;
+        const { data: { type } } = target;
         // const startDate = new Date(from);
         // const endDate = new Date(to);
         const filter = {};
@@ -46,7 +44,7 @@ class Grafana {
             filter.strikePrice = _.isArray(strikePrices) ?
                 { $in: strikePrices.map(a => Number(a)) } : strikePrices
         }
-        const result = await optionDAO.getOptionsColumn(`${typeValue}.${fieldValue}`, filter);
+        const result = await optionDAO.getOptionsColumn(`${type}.${fieldValue}`, filter);
         res.status(200).json(result);
     }
 

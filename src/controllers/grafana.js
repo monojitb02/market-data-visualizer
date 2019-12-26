@@ -28,9 +28,8 @@ class Grafana {
             // maxDataPoints,
             // adhocFilters,
             scopedVars: {
-                strikePrice: {
-                    value: strikePrices
-                },
+                callStrikePrice,
+                putStrikePrice,
                 field: {
                     value: fieldValue = 'oi'
                 }
@@ -40,6 +39,7 @@ class Grafana {
         // const startDate = new Date(from);
         // const endDate = new Date(to);
         const filter = {};
+        const strikePrices = type === 'calls' ? callStrikePrice.value : putStrikePrice.value
         if (strikePrices) {
             filter.strikePrice = _.isArray(strikePrices) ?
                 { $in: strikePrices.map(a => Number(a)) } : strikePrices

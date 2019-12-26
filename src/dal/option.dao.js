@@ -12,7 +12,7 @@ class OptionDAO {
     async getStrikePrices(filters = {}) {
         return await this.model.aggregate().match(filters).group({
             _id: '$strikePrice',
-        }).sort('_id').project({
+        }).sort({ _id: 1 }).project({
             _id: 0,
             text: '$_id',
             value: '$_id'

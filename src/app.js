@@ -92,7 +92,7 @@ class App {
             validateOperation,
             validateAccept,
             validateContentLength,
-            validateRequestSize,
+            validateRequestSize, // eslint-disable-line no-alert, no-unused-vars
             validateContentType
         ] = validateRequest();
         const nextWrap = (cb) => {
@@ -113,7 +113,7 @@ class App {
             validateOperation,
             validateAccept,
             validateContentLength_fix,
-            validateRequestSize,
+            // validateRequestSize,
             validateContentType
         ];
         //----------------- end ----------------------//

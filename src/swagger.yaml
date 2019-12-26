@@ -7,6 +7,112 @@ servers:
 security:
   - ApiKeyAuth: []
 paths:
+  /grafana:
+    x-swagger-router-controller: grafana
+    get:
+      x-anonymous: true
+      tags:
+        - Grafana
+      description: Grafana json data source health probe
+      operationId: getHealth
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OptionResponse"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /grafana/search:
+    x-swagger-router-controller: grafana
+    post:
+      x-anonymous: true
+      tags:
+        - Grafana
+      description: Grafana json data source health probe
+      operationId: search
+      consumes:
+        - application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                target: string
+                type:
+                  type: string
+                  enum: [timeseries, table]
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OptionResponse"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /grafana/query:
+    x-swagger-router-controller: grafana
+    post:
+      x-anonymous: true
+      tags:
+        - Grafana
+      description: Grafana json data source health probe
+      operationId: query
+      consumes:
+        - application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                range:
+                  type: object
+                  properties:
+                    from: date
+                    to: date
+                intervalMs: number,
+              targets:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    target: string
+                    type: string
+              maxDataPoints: number,
+              adhocFilters:
+                type: array
+                items: object
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OptionResponse"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /options/latest:
     x-swagger-router-controller: option
     get:

@@ -9,6 +9,40 @@ class OptionDAO {
     async getOptions(filters = {}) {
         return await this.model.find(filters);
     }
+    async getStrikePrices(filters = {}) {
+        return await this.model.aggregate().match(filters).group({
+            _id: '$strikePrice',
+        }).project({
+            _id: 0,
+            text: '$_id',
+            value: '$_id'
+        });
+    }
+
+    async getOptionsColumn(columnPath, filters = {}) {
+        return await this.model.aggregate().match(filters).group({
+            _id: '$strikePrice',
+            data: {
+                $push: `$${columnPath}`
+            },
+            time: {
+                $push: {
+                    $subtract: [
+                        '$createdAt',
+                        new Date('1970-01-01')
+                    ]
+                }
+            }
+        }).project({
+            _id: 0,
+            target: '$_id',
+            datapoints: {
+                $zip: {
+                    inputs: ['$data', '$time']
+                }
+            }
+        })
+    }
     async getLatestOptions(filter = {}, fields = {
         strikePrice: 1,
         calls: 1,

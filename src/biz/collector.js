@@ -9,7 +9,9 @@ const headers = {
 };
 class Collector {
     async loadOptions() {
+        console.log('>>>>>', baseUrl);
         const { data } = await request(`${baseUrl}${optionsPath}`, {}, headers);
+        console.log('<<<<<', baseUrl);
         return data;
     }
 }
